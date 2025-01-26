@@ -1,13 +1,12 @@
 import React from 'react';
 import { View, Text, Image, StyleSheet } from 'react-native';
-import HeaderImage from '../assets/logos/banner.png';
-import { RFPercentage, RFValue } from 'react-native-responsive-fontsize';
-import { useFonts, RedHatDisplay_400Regular, RedHatDisplay_700Bold, RedHatDisplay_600SemiBold } from '@expo-google-fonts/red-hat-display';
+import HeaderImage from '../assets/logos/icon.png';
+import { RFValue } from 'react-native-responsive-fontsize';
+import { useFonts, RedHatDisplay_600SemiBold } from '@expo-google-fonts/red-hat-display';
 
 const HeaderBig = ({ subtitle }) => {
     let [fontsLoaded] = useFonts({
-        RedHatDisplay_400Regular,
-        RedHatDisplay_700Bold,
+
         RedHatDisplay_600SemiBold,
     });
 
@@ -31,17 +30,17 @@ const styles = StyleSheet.create({
         
     },
     image: {
-        width: '100%', 
-        height: RFValue(110), 
+        height: RFValue(100),
+        width: RFValue(100),
         resizeMode: 'contain',
-        maxWidth: '95%',
+        borderRadius: 100, 
     },
     subtitle: {
-        marginTop: RFValue(10), // Added margin top for spacing
-        fontSize: RFValue(20), // Adjusted font size for better readability
-        color: '#fff',
+        marginTop: RFValue(10), 
+        fontSize: RFValue(16), 
+        color: 'rgba(255, 255, 255, 0.63)',
         fontFamily: 'RedHatDisplay_600SemiBold',
-        textAlign: 'center', // Centered the text
+        textAlign: 'center', 
 
     },
 });

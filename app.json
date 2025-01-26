@@ -1,43 +1,33 @@
 {
   "expo": {
-    "name": "EcoEscolas CCF App",
-    "slug": "EcoEscolasCCFApp",
+    "name": "LoginWithGoogle",
+    "slug": "LoginWithGoogle",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/logos/icon.png",
     "userInterfaceStyle": "light",
     "scheme": "ccf",
     "splash": {
-      "image": "./assets/splash.png",
+      "image": "./assets/logos/splash.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
     "assetBundlePatterns": [
       "assets/**/*"
     ],
-
-
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "dev.afonsoingles.ccf",
-      "infoPlist": {
-        "com.apple.developer.usernotifications.critical-alerts": 1
-      },
-      "entitlements": {
-        "com.apple.developer.usernotifications.critical-alerts": true
-      }
+      "bundleIdentifier": "dev.afonsoingles.googlelogin"
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
+        "foregroundImage": "./assets/logos/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "dev.afonsoingles.ccf",
-      "googleServicesFile": "./assets/google-services.json"
+      "package": "dev.afonsoingles.googlelogin"
     },
     "web": {
-      "favicon": "./assets/favicon.png"
+      "favicon": "./assets/logos/favicon.png"
     }
-    
   }
 }
