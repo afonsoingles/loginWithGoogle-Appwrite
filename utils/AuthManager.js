@@ -2,6 +2,9 @@ import { makeRedirectUri } from 'expo-auth-session'
 import * as WebBrowser from 'expo-web-browser';
 import { account } from './AppwriteManager';
 import { OAuthProvider } from 'react-native-appwrite';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useNavigation } from '@react-navigation/native';
+
 
 
 
@@ -30,8 +33,9 @@ export async function LoginWithGoogle() {
         const secret = url.searchParams.get('secret');
         const userId = url.searchParams.get('userId');
         
-
+        try {await account.deleteSessions('current');} catch(e){}
         const session = await account.createSession(userId, secret);
+       
         if (session) {
             return true;
         } else {
@@ -46,3 +50,32 @@ export async function LoginWithGoogle() {
 
 
 }
+
+
+export const processLogout = async () => {
+  const navigation = useNavigation();
+  await AsyncStorage.setItem('loggedIn', 'false');
+  try {await account.deleteSessions('current');} catch(e){}
+    
+  navigation.navigate('AuthRoutes', { screen: 'Login' });
+
+}
+
+export const checkLoginStatus = async () => {
+  console.log('Checking login status');
+  const loggedIn = await AsyncStorage.getItem('loggedIn');
+  
+  if (loggedIn === 'true') {
+    try {
+      const _account = await account.get();
+    } catch (error) {
+      console.log('User is not logged in');
+      await AsyncStorage.setItem('loggedIn', 'false');
+      return "loggedOut";
+    }
+    console.log('User is already logged in');
+    return "loggedIn";
+  } else {
+    return "loggedOut";
+  }
+};

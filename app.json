@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "LoginWithGoogle",
-    "slug": "LoginWithGoogle",
+    "name": "EcoEscolas CCF App",
+    "slug": "EcoEscolasCCFApp",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/logos/icon.png",
@@ -17,17 +17,22 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "dev.afonsoingles.googlelogin"
+      "bundleIdentifier": "dev.afonsoingles.ccf"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/logos/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "dev.afonsoingles.googlelogin"
+      "package": "dev.afonsoingles.ccf"
     },
     "web": {
       "favicon": "./assets/logos/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "5b878530-f60b-4693-bb17-fb16d2927be3"
+      }
     }
   }
 }

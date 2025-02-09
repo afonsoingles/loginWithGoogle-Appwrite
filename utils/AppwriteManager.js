@@ -1,4 +1,4 @@
-import { Client, Account, ID, AppwriteException, Messaging, Avatars } from "react-native-appwrite";
+import { Client, Account, ID, AppwriteException, Messaging, Avatars, Databases } from "react-native-appwrite";
 import { APPWRITE_PROJECT_ID, APPWRITE_PLATFORM } from '@env';
 
 let client = new Client()
@@ -10,7 +10,8 @@ let account = new Account(client);
 let messaging = new Messaging(client);
 let avatars = new Avatars(client);
 let id = new ID(client);
+let databases = new Databases(client);
 
 
 
-export { messaging, account, avatars, id, AppwriteException };
+export { messaging, account, avatars, id, AppwriteException, databases };
