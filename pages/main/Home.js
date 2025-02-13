@@ -67,7 +67,7 @@ const HomeScreen = () => {
           <DailyStats title={"Hoje"} value={"ERROR"} description={"perguntas respondidas corretamente"}/>
         </View>
       </View>
-      <Button text={"im a button"} onButtonClicked={() => navigation.navigate("MainRoutes", {screen: "Practice"})}/>
+      
       <View style={[{bottom: RFValue(20), position: 'absolute', width: '50%', alignSelf: 'center'}]}>
         <NavigationBar tab={"home"} userInfo={userInfo}/>
       </View>

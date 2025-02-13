@@ -32,3 +32,20 @@ export const getUserData = async () => {
 
   return data;
 }
+
+export const getToken = async () => {
+  const cachedToken = await AsyncStorage.getItem('authToken');
+  const cacheTimestamp = await AsyncStorage.getItem('tokenCacheTimestamp');
+  const now = Date.now();
+
+  if (cachedToken && cacheTimestamp && (now - cacheTimestamp < 1 * 60 * 1000)) {
+    console.log("Using cached token");
+    return cachedToken.toString();
+  } else {
+    const token = await account.createJWT();
+    await AsyncStorage.setItem('authToken', token.jwt);
+    await AsyncStorage.setItem('tokenCacheTimestamp', now.toString());
+    
+    return token.jwt.toString();
+  }
+}

@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, Image } from 'react-native';
 import { RFValue } from 'react-native-responsive-fontsize';
 import { useFonts, RedHatDisplay_600SemiBold } from '@expo-google-fonts/red-hat-display';
 
-const ProgressBar = ({ level, progress, maxProgress }) => {
+const QuestionsProgress = ({ progress, maxProgress }) => {
     let [fontsLoaded] = useFonts({
         RedHatDisplay_600SemiBold,
     });
@@ -14,7 +14,7 @@ const ProgressBar = ({ level, progress, maxProgress }) => {
     
     return (
         <View style={styles.container}>
-            <Text style={styles.levelText}>Nível {level}</Text>
+            <Text style={styles.levelText}>Progresso</Text>
             <View style={styles.progressContainer}>
                 <View
                     style={[
@@ -27,10 +27,7 @@ const ProgressBar = ({ level, progress, maxProgress }) => {
                         <Text style={styles.progressText}>
                             {progress}/{maxProgress}
                         </Text>
-                        <Image
-                            source={require('../../assets/icons/leaf.png')} 
-                            style={styles.icon}
-                        />
+                        
                     </View>
                 </View>
             </View>
@@ -45,7 +42,7 @@ const styles = StyleSheet.create({
     },
     levelText: {
         color: '#FFF',
-        fontSize: RFValue(14),
+        fontSize: RFValue(12),
         marginBottom: RFValue(5),
         fontFamily: 'RedHatDisplay_600SemiBold',
     },
@@ -75,10 +72,11 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     progressText: {
-        color: '#FFF',
+        color: 'rgba(36, 109, 18, 0.6)',
         fontSize: RFValue(12),
         fontFamily: 'RedHatDisplay_600SemiBold',
         marginLeft: RFValue(10),
+        
     },
     icon: {
         marginLeft: RFValue(5),
@@ -89,4 +87,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default ProgressBar;
+export default QuestionsProgress;

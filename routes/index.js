@@ -3,7 +3,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import MainRoutes from './MainRoutes';
 import AuthRoutes from './AuthRoutes';
-
+import QuestionsRoutes from './QuestionsRoutes';
 const Stack = createStackNavigator();
 
 const Router = () => {
@@ -12,6 +12,7 @@ const Router = () => {
       <Stack.Navigator>
         <Stack.Screen name="MainRoutes" component={MainRoutes} options={{ headerShown: false }} />
         <Stack.Screen name="AuthRoutes" component={AuthRoutes} options={{ headerShown: false }} />
+        <Stack.Screen name="QuestionsRoutes" component={QuestionsRoutes} options={{ headerShown: false }} />
       </Stack.Navigator>
     </NavigationContainer>
   );

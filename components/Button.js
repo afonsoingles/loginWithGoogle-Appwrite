@@ -3,10 +3,14 @@ import { TouchableOpacity, Text, StyleSheet, View, Image } from 'react-native';
 import { RFValue } from 'react-native-responsive-fontsize';
 import { ActivityIndicator } from 'react-native';
 
-const Button = ({ isButtonDisabled, text, onButtonClicked, isLoading, imageSource, color = '#FFF', disabledColor = 'rgba(33, 33, 33, 0.5)', width = '50%', height = RFValue(40) }) => {
+const Button = ({ isButtonDisabled, text, onButtonClicked, isLoading, imageSource, width, height }) => {
   return (
     <TouchableOpacity
-      style={[buttonStyles.button, { width, height }, isButtonDisabled && { backgroundColor: disabledColor }]}
+      style={[
+        buttonStyles.button,
+        isButtonDisabled && buttonStyles.disabledButton,
+        { width: width || '50%', height: height || RFValue(40) }
+      ]}
       disabled={isButtonDisabled}
       onPress={onButtonClicked}
     >
@@ -15,7 +19,7 @@ const Button = ({ isButtonDisabled, text, onButtonClicked, isLoading, imageSourc
       ) : (
         <View style={buttonStyles.contentContainer}>
           {imageSource && <Image source={imageSource} style={buttonStyles.image} />}
-          <Text style={[buttonStyles.buttonText, isButtonDisabled && { color: disabledColor }]}>
+          <Text style={[buttonStyles.buttonText, isButtonDisabled && buttonStyles.disabledButton]}>
             {text}
           </Text>
         </View>
@@ -30,7 +34,10 @@ const buttonStyles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 11,
-    alignSelf: 'center',
+  },
+  disabledButton: {
+    color: 'rgba(255, 255, 255, 0.5)',
+    backgroundColor: '#1c1a1a',
   },
   buttonText: {
     color: '#fff',

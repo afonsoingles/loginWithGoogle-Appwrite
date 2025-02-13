@@ -4,15 +4,16 @@ import BackgroundWrapper from '../../components/BackgroundWrapper';
 import HeaderBig from '../../components/HeaderBig';
 import { RFPercentage, RFValue } from 'react-native-responsive-fontsize';
 import { useFonts, RedHatDisplay_400Regular, RedHatDisplay_700Bold, RedHatDisplay_600SemiBold, RedHatDisplay_300Light } from '@expo-google-fonts/red-hat-display';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import ErrorMessage  from '../../components/ErrorMessage';
 import { useNavigation } from '@react-navigation/native';
 import icon from '../../assets/logos/icon.png';
 import CornerImage from '../../components/user/CornerImage';
-import { account } from '../../utils/AppwriteManager';
+import {API_URL} from '@env'
 import Levels from '../../components/user/ProgressBar';
 import NavigationBar from '../../components/NavBar';
 import Button from '../../components/Button';
-import { getUserData } from '../../utils/users/getData';
+import axios from 'axios';
+import { getUserData, getToken } from '../../utils/users/getData';
 import { checkLoginStatus } from '../../utils/AuthManager';
 import Loader from '../../pages/main/Loader';
 import recycle_bin from '../../assets/icons/recycle_bin.png';
@@ -22,6 +23,19 @@ import random from '../../assets/icons/random.png';
 
 const PracticeScreen = ({ route }) => {
   const [userInfo, setUserInfo] = useState('');
+  const [error, setError] = useState('');
+  // on/off
+  const [isRecyclingDisabled, setIsRecyclingDisabled] = useState(false);
+  const [isWaterDisabled, setIsWaterDisabled] = useState(false);
+  const [isSustainabilityDisabled, setIsSustainabilityDisabled] = useState(false);
+  const [isRandomDisabled, setIsRandomDisabled] = useState(false);
+
+  // loading
+  const [isRecyclingLoading, setIsRecyclingLoading] = useState(false);
+  const [isWaterLoading, setIsWaterLoading] = useState(false);
+  const [isSustainabilityLoading, setIsSustainabilityLoading] = useState(false);
+  const [isRandomLoading, setIsRandomLoading] = useState(false);
+
   const [fontsLoaded] = useFonts({
     RedHatDisplay_400Regular,
     RedHatDisplay_700Bold,
@@ -49,8 +63,85 @@ const PracticeScreen = ({ route }) => {
   if (!fontsLoaded || !userInfo) return <Loader />;
 
   const StartQuestionSession = async (theme) => {
+    
+    switch (theme) {
+      case "reciclagem":
+        setIsRecyclingDisabled(true);
+        setIsRandomDisabled(true);
+        setIsWaterDisabled(true);
+        setIsSustainabilityDisabled(true);
+        
+        setIsRecyclingLoading(true);
+        break;
+      case "agua":
+        setIsRecyclingDisabled(true);
+        setIsRandomDisabled(true);
+        setIsWaterDisabled(true);
+        setIsSustainabilityDisabled(true);
+        
+        setIsWaterLoading(true);
+        break;
+      case "sustentabilidade":
+        setIsRecyclingDisabled(true);
+        setIsRandomDisabled(true);
+        setIsWaterDisabled(true);
+        setIsSustainabilityDisabled(true);
+        
+        setIsSustainabilityLoading(true);
+        break;
+      case "all":
+        setIsRecyclingDisabled(true);
+        setIsRandomDisabled(true);
+        setIsWaterDisabled(true);
+        setIsSustainabilityDisabled(true);
+        
+        setIsRandomLoading(true);
+        break;
+    }
 
-    // passar o theme. retorna o sessionId (salvar em cache) + questoes.
+    const token = ("Bearer " + (await getToken()));
+    
+   
+    
+    try {
+      const request = await axios.get(`${API_URL}/v1/questions` , {
+        headers: {
+          authorization: token,
+        },
+        params: {
+          theme: theme,
+        }
+      });
+
+      const sessionInfo = {
+        theme: theme,
+        replied_questions: 0,
+        response: [],
+      }
+      navigation.navigate("QuestionsRoutes", { screen: 'Main', params: {userInfo: userInfo, questionsData: request.data, sessionInfo: sessionInfo}});
+
+    } catch (error) {
+      setIsRandomDisabled(true);
+      setIsRecyclingDisabled(true);
+      setIsWaterDisabled(true);
+      setIsSustainabilityDisabled(true);
+      setIsRandomLoading(false);
+      setIsRecyclingLoading(false);
+      setIsWaterLoading(false);
+      setIsSustainabilityLoading(false);
+
+      setError("Pedimos desculpa, mas parece que algo correu mal. Por favor, tente novamente mais tarde.");
+
+      setTimeout(() => {
+        setIsRandomDisabled(false);
+        setIsRecyclingDisabled(false);
+        setIsWaterDisabled(false);
+        setIsSustainabilityDisabled(false);
+        setError('');
+      }, 5000);
+    }
+
+    // ao clicar, desativar todos os botoes e redirecionar para pagina de questoes com loading ao centro. depois fazer a request e carregar os dados. no final enquanto submete para a api, aparece um ddrumroll e dps a screen de resultados. animaçções entre perguntas.
   }
 
   return (
@@ -74,15 +165,20 @@ const PracticeScreen = ({ route }) => {
 
       <View style={[{width: '80%', alignSelf: 'center', marginTop: RFPercentage(4)}]}>
         <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-          <Button text="Reciclagem" onPress={() => navigation.navigate('Tema1')} width="48%" imageSource={recycle_bin}/>
-          <Button text="Água" onPress={() => navigation.navigate('Tema2')} width="48%" imageSource={water}/>
+          <Button text="Reciclagem" onButtonClicked={() => StartQuestionSession("reciclagem")} width="48%" imageSource={recycle_bin} isButtonDisabled={isRecyclingDisabled} isLoading={isRecyclingLoading}/>
+          <Button text="Água" onButtonClicked={() => StartQuestionSession("agua")} width="48%" imageSource={water} isButtonDisabled={isWaterDisabled} isLoading={isWaterLoading}/>
         </View>
         <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: RFPercentage(2) }}>
-          <Button text="Sustentabilidade" onPress={() => navigation.navigate('Tema3')} width="48%" imageSource={earth}/>
-          <Button text="Aleatório" onPress={() => navigation.navigate('Tema4')} width="48%" imageSource={random}/>
+          <Button text="Sustentabilidade" onButtonClicked={() => StartQuestionSession("sustentabilidade")} width="48%" imageSource={earth} isButtonDisabled={isSustainabilityDisabled} isLoading={isSustainabilityLoading}/>
+          <Button text="Aleatório" onButtonClicked={() => StartQuestionSession("all")} width="48%" imageSource={random} isButtonDisabled={isRandomDisabled} isLoading={isRandomLoading}/>
         </View>
-      </View>
 
+      </View>
+      <View style={[{width: '80%', alignSelf: 'center', marginTop: RFPercentage(4)}]}>
+        <ErrorMessage text={error} isVisible={error !== ''}/>
+      </View>
+      
+      
       <View style={[{bottom: RFValue(20), position: 'absolute', width: '50%', alignSelf: 'center'}]}>
         <NavigationBar tab={"practice"} userInfo={userInfo}/>
       </View>
